@@ -1,7 +1,7 @@
 import React from "react";
 import "./App.css";
 
-import { Form, Input, Select, Button, Card, DatePicker } from "antd";
+import { Form, Input, Select, Button, Card, DatePicker, Table } from "antd";
 
 const { Option } = Select;
 const { MonthPicker, RangePicker } = DatePicker;
@@ -74,50 +74,97 @@ class App extends React.Component {
     const { size } = this.props;
     const state = this.state;
 
+    const dataSource = [
+      {
+        key: "1",
+        name: "胡彦斌",
+        age: 32,
+        address: "西湖区湖底公园1号"
+      },
+      {
+        key: "2",
+        name: "胡彦祖",
+        age: 42,
+        address: "西湖区湖底公园1号"
+      }
+    ];
+
+    const columns = [
+      {
+        title: "设备标识",
+        dataIndex: "mac",
+        key: "mac"
+      },
+      {
+        title: "产品名称",
+        dataIndex: "app",
+        key: "app"
+      },
+      {
+        title: "平台类型",
+        dataIndex: "os",
+        key: "os"
+      },
+
+      {
+        title: "上线时间",
+        dataIndex: "createAt",
+        key: "createAt"
+      }
+    ];
+
     return (
-      <Card style={{ width: "80%" }} id="box">
-        <span>
-          <span>产品名称:</span>
-          <Select
-            id="select_app"
-            value={state.app}
-            size={size}
-            style={{ width: "100px" }}
-            onChange={this.handleAppChange}
-          >
-            <Option value="slight">slight</Option>
-            <Option value="coolcar">coolcar</Option>
-            <Option value="public">公版</Option>
-            <Option value="all">所有</Option>
-          </Select>
+      <div id="box">
+        <Card style={{ width: "100%" }}>
+          <span>
+            <span>产品名称:</span>
+            <Select
+              id="select_app"
+              value={state.app}
+              size={size}
+              style={{ width: "100px" }}
+              onChange={this.handleAppChange}
+            >
+              <Option value="slight">slight</Option>
+              <Option value="coolcar">coolcar</Option>
+              <Option value="public">公版</Option>
+              <Option value="all">所有</Option>
+            </Select>
 
-          <span>平台类型:</span>
-          <Select
-            id="select_os"
-            value={state.os}
-            size={size}
-            style={{ width: "100px" }}
-            onChange={this.handleOsChange}
-          >
-            <Option value="ios">iOS</Option>
-            <Option value="android">Android</Option>
-            <Option value="all">所有</Option>
-          </Select>
+            <span>平台类型:</span>
+            <Select
+              id="select_os"
+              value={state.os}
+              size={size}
+              style={{ width: "100px" }}
+              onChange={this.handleOsChange}
+            >
+              <Option value="ios">iOS</Option>
+              <Option value="android">Android</Option>
+              <Option value="all">所有</Option>
+            </Select>
 
-          <span>时间:</span>
-          <RangePicker
-            id="picker"
-            format="YYYY-MM-DD"
-            placeholder={["开始日期", "结束日期"]}
-            onChange={this.onChange}
-            onOk={this.onOk}
-          />
+            <span>时间:</span>
+            <RangePicker
+              id="picker"
+              format="YYYY-MM-DD"
+              placeholder={["开始日期", "结束日期"]}
+              onChange={this.onChange}
+              onOk={this.onOk}
+            />
 
-          <Button type="primary" id="btn1">
-            搜索
-          </Button>
-        </span>
-      </Card>
+            <Button type="primary" id="btn1">
+              搜索
+            </Button>
+          </span>
+        </Card>
+        <Table
+          id="table"
+          dataSource={dataSource}
+          columns={columns}
+          size="small"
+        />
+      </div>
     );
   }
 }
