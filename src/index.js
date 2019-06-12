@@ -4,6 +4,13 @@ import "./index.css";
 import App from "./App";
 import * as serviceWorker from "./serviceWorker";
 import "antd/dist/antd.css";
+// import axios from "axios";
+
+import moment from "moment";
+import "moment/locale/zh-cn";
+
+React.Component.prototype.$moment = moment;
+// React.Component.prototype.$http = axios;
 
 ReactDOM.render(<App />, document.getElementById("root"));
 

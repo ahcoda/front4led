@@ -61,6 +61,15 @@ class App extends React.Component {
     }
   };
 
+  onChange = (value, dateString) => {
+    console.log("Selected Time: ", value);
+    console.log("Formatted Selected Time: ", dateString);
+  };
+
+  onOk = value => {
+    console.log("onOk: ", value);
+  };
+
   render() {
     const { size } = this.props;
     const state = this.state;
@@ -68,16 +77,9 @@ class App extends React.Component {
     return (
       <Card style={{ width: "80%" }} id="box">
         <span>
-          <Input
-            type="text"
-            size={size}
-            value={state.number}
-            onChange={this.handleNumberChange}
-            style={{ width: "10%", marginRight: "3%" }}
-          />
-
-          <span>产品名称: </span>
+          <span>产品名称:</span>
           <Select
+            id="select_app"
             value={state.app}
             size={size}
             style={{ width: "100px" }}
@@ -89,8 +91,9 @@ class App extends React.Component {
             <Option value="all">所有</Option>
           </Select>
 
-          <span> 平台类型: </span>
+          <span>平台类型:</span>
           <Select
+            id="select_os"
             value={state.os}
             size={size}
             style={{ width: "100px" }}
@@ -100,8 +103,19 @@ class App extends React.Component {
             <Option value="android">Android</Option>
             <Option value="all">所有</Option>
           </Select>
-          <span> </span>
-          <Button>搜索</Button>
+
+          <span>时间:</span>
+          <RangePicker
+            id="picker"
+            format="YYYY-MM-DD"
+            placeholder={["开始日期", "结束日期"]}
+            onChange={this.onChange}
+            onOk={this.onOk}
+          />
+
+          <Button type="primary" id="btn1">
+            搜索
+          </Button>
         </span>
       </Card>
     );
