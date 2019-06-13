@@ -135,5 +135,5 @@
       "react-app"
     ]
   },
-  "proxy": "http://www.yiqibangbang.com:8080"
+  "proxy": "http://www.yiqibangbang.com:8080/"
 }
