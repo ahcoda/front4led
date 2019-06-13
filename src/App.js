@@ -68,6 +68,7 @@ class App extends React.Component {
     var my = this;
     var baseUrl =
       "http://www.yiqibangbang.com:8080/led/list?index=0&size=10240";
+    // "http://localhost:8080/led/list?index=0&size=10240";
 
     var os = this.state.os;
     var from = this.state.range[0];
@@ -105,7 +106,10 @@ class App extends React.Component {
             mac: v.mac,
             os: v.os,
             app: v.app,
-            createdAt: v.createdAt
+            udid: v.udid,
+            use: v.use,
+            createdAt: v.createdAt,
+            updatedAt: v.updatedAt
           });
           return true;
         });
@@ -129,6 +133,11 @@ class App extends React.Component {
         key: "key"
       },
       {
+        title: "手机标识",
+        dataIndex: "udid",
+        key: "udid"
+      },
+      {
         title: "设备标识",
         dataIndex: "mac",
         key: "mac"
@@ -143,11 +152,20 @@ class App extends React.Component {
         dataIndex: "os",
         key: "os"
       },
-
       {
-        title: "上线时间",
+        title: "上线次数",
+        dataIndex: "use",
+        key: "use"
+      },
+      {
+        title: "注册时间",
         dataIndex: "createdAt",
         key: "createdAt"
+      },
+      {
+        title: "最近上线",
+        dataIndex: "updatedAt",
+        key: "updatedAt"
       }
     ];
 
