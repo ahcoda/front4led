@@ -85,11 +85,11 @@ class App extends React.Component {
     if (from !== undefined && to !== undefined) {
       baseUrl = baseUrl + "&from=" + from + "&to=" + to;
     }
-    // console.log("url", baseUrl);
-    // console.log("os", os);
-    // console.log("app", app);
-    // console.log("from", from);
-    // console.log("to", to);
+    console.log("url", baseUrl);
+    console.log("os", os);
+    console.log("app", app);
+    console.log("from", from);
+    console.log("to", to);
 
     axios
       .get(baseUrl)
