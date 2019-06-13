@@ -84,23 +84,23 @@ class App extends React.Component {
     if (from !== undefined && to !== undefined) {
       baseUrl = baseUrl + "&from=" + from + "&to=" + to;
     }
-    console.log("url", baseUrl);
-    console.log("os", os);
-    console.log("app", app);
-    console.log("from", from);
-    console.log("to", to);
+    // console.log("url", baseUrl);
+    // console.log("os", os);
+    // console.log("app", app);
+    // console.log("from", from);
+    // console.log("to", to);
 
     axios
       .get(baseUrl)
       .then(function(response) {
-        console.log(response.data);
-        console.log(response.data.data.items);
-        console.log(my);
+        // console.log(response.data);
+        // console.log(response.data.data.items);
+        // console.log(my);
         var _data = [];
 
         response.data.data.items.map((v, i) => {
           _data.push({
-            key: i,
+            key: i + 1,
             mac: v.mac,
             os: v.os,
             app: v.app,
@@ -122,6 +122,11 @@ class App extends React.Component {
     const state = this.state;
 
     const columns = [
+      {
+        title: "记录序号",
+        dataIndex: "key",
+        key: "key"
+      },
       {
         title: "设备标识",
         dataIndex: "mac",
