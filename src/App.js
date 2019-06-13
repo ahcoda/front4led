@@ -1,140 +1,160 @@
-import React from 'react';
-import './App.css';
-import axios from 'axios';
+import React from "react";
+import "./App.css";
+import axios from "axios";
 
-import {Form, Input, Select, Button, Card, DatePicker, Table} from 'antd';
+import { Select, Button, Card, DatePicker, Table } from "antd";
 
-const {Option} = Select;
-const {MonthPicker, RangePicker} = DatePicker;
+const { Option } = Select;
+const { RangePicker } = DatePicker;
 
 class App extends React.Component {
-  static getDerivedStateFromProps (nextProps) {
+  static getDerivedStateFromProps(nextProps) {
     // Should be a controlled component.
-    if ('value' in nextProps) {
+    if ("value" in nextProps) {
       return {
-        ...(nextProps.value || {}),
+        ...(nextProps.value || {})
       };
     }
     return null;
   }
 
-  constructor (props) {
-    super (props);
+  constructor(props) {
+    super(props);
 
     const value = props.value || {};
     this.state = {
-      number: value.number || 0,
-      os: value.os || '所有',
-      app: value.app || '所有',
+      range: [],
+      os: value.os || "all",
+      app: value.app || "all",
+      dataSource: []
     };
   }
 
-  handleNumberChange = e => {
-    const number = parseInt (e.target.value || 0, 10);
-    if (Number.isNaN (number)) {
-      return;
-    }
-    if (!('value' in this.props)) {
-      this.setState ({number});
-    }
-    this.triggerChange ({number});
-  };
-
   handleAppChange = app => {
-    if (!('value' in this.props)) {
-      this.setState ({app});
+    if (!("value" in this.props)) {
+      this.setState({ app });
     }
-    this.triggerChange ({app});
+    this.triggerChange({ app });
   };
 
   handleOsChange = os => {
-    if (!('value' in this.props)) {
-      this.setState ({os});
+    if (!("value" in this.props)) {
+      this.setState({ os });
     }
-    this.triggerChange ({os});
+    this.triggerChange({ os });
   };
 
   triggerChange = changedValue => {
     // Should provide an event to pass value to Form.
     const onChange = this.props.onChange;
     if (onChange) {
-      onChange (Object.assign ({}, this.state, changedValue));
+      onChange(Object.assign({}, this.state, changedValue));
     }
   };
 
   onChange = (value, dateString) => {
-    console.log ('Selected Time: ', value);
-    console.log ('Formatted Selected Time: ', dateString);
+    console.log("Selected Time: ", value);
+    console.log("Formatted Selected Time: ", dateString);
+    this.setState({
+      range: dateString
+    });
   };
 
   onOk = value => {
-    console.log ('onOk: ', value);
+    console.log("onOk: ", value);
   };
 
   onClickSearchButton = () => {
+    var my = this;
+    var baseUrl = "http://localhost:8080/led/list?index=0&size=10240";
+
+    var os = this.state.os;
+    var from = this.state.range[0];
+    var to = this.state.range[1];
+    var app = this.state.app;
+
+    if (os !== "all") {
+      baseUrl = baseUrl + "&os=" + os;
+    }
+
+    if (app !== "all") {
+      baseUrl = baseUrl + "&app=" + app;
+    }
+
+    if (from !== undefined && to !== undefined) {
+      baseUrl = baseUrl + "&from=" + from + "&to=" + to;
+    }
+    console.log("url", baseUrl);
+    console.log("os", os);
+    console.log("app", app);
+    console.log("from", from);
+    console.log("to", to);
+
     axios
-      .get ('http://localhost:8080/led/list?index=0&size=10&app=slight')
-      .then (function (response) {
-        console.log (response.data);
+      .get(baseUrl)
+      .then(function(response) {
+        console.log(response.data);
+        console.log(response.data.data.items);
+        console.log(my);
+        var _data = [];
+
+        response.data.data.items.map((v, i) => {
+          _data.push({
+            key: i,
+            mac: v.mac,
+            os: v.os,
+            app: v.app,
+            createdAt: v.createdAt
+          });
+          return true;
+        });
+        my.setState({
+          dataSource: _data
+        });
       })
-      .catch (function (error) {
-        console.log (error);
+      .catch(function(error) {
+        console.log(error);
       });
   };
 
-  render () {
-    const {size} = this.props;
+  render() {
+    const { size } = this.props;
     const state = this.state;
-
-    const dataSource = [
-      {
-        key: '1',
-        name: '胡彦斌',
-        age: 32,
-        address: '西湖区湖底公园1号',
-      },
-      {
-        key: '2',
-        name: '胡彦祖',
-        age: 42,
-        address: '西湖区湖底公园1号',
-      },
-    ];
 
     const columns = [
       {
-        title: '设备标识',
-        dataIndex: 'mac',
-        key: 'mac',
+        title: "设备标识",
+        dataIndex: "mac",
+        key: "mac"
       },
       {
-        title: '产品名称',
-        dataIndex: 'app',
-        key: 'app',
+        title: "产品名称",
+        dataIndex: "app",
+        key: "app"
       },
       {
-        title: '平台类型',
-        dataIndex: 'os',
-        key: 'os',
+        title: "平台类型",
+        dataIndex: "os",
+        key: "os"
       },
 
       {
-        title: '上线时间',
-        dataIndex: 'createAt',
-        key: 'createAt',
-      },
+        title: "上线时间",
+        dataIndex: "createdAt",
+        key: "createdAt"
+      }
     ];
 
     return (
       <div id="box">
-        <Card style={{width: '100%'}}>
+        <Card style={{ width: "100%" }}>
           <span>
             <span>产品名称:</span>
             <Select
               id="select_app"
               value={state.app}
               size={size}
-              style={{width: '100px'}}
+              style={{ width: "100px" }}
               onChange={this.handleAppChange}
             >
               <Option value="slight">slight</Option>
@@ -148,7 +168,7 @@ class App extends React.Component {
               id="select_os"
               value={state.os}
               size={size}
-              style={{width: '100px'}}
+              style={{ width: "100px" }}
               onChange={this.handleOsChange}
             >
               <Option value="ios">iOS</Option>
@@ -160,7 +180,7 @@ class App extends React.Component {
             <RangePicker
               id="picker"
               format="YYYY-MM-DD"
-              placeholder={['开始日期', '结束日期']}
+              placeholder={["开始日期", "结束日期"]}
               onChange={this.onChange}
               onOk={this.onOk}
             />
@@ -172,7 +192,7 @@ class App extends React.Component {
         </Card>
         <Table
           id="table"
-          dataSource={dataSource}
+          dataSource={this.state.dataSource}
           columns={columns}
           size="small"
         />
