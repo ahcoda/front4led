@@ -66,7 +66,7 @@ class App extends React.Component {
 
   onClickSearchButton = () => {
     var my = this;
-    var baseUrl = "http://localhost:8080/led/list?index=0&size=10240";
+    var baseUrl = "http://172.17.97.229:8080/led/list?index=0&size=10240";
 
     var os = this.state.os;
     var from = this.state.range[0];
